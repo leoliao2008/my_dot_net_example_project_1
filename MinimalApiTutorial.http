@@ -36,3 +36,7 @@ DELETE {{MinimalApiTutorial_HostAddress}}/todoitems/1
 
 ###
 
+
+GET {{MinimalApiTutorial_HostAddress}}/todoitems/
+
+###
