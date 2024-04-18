@@ -11,7 +11,7 @@ RouteGroupBuilder grpBuilder = app.MapGroup("/student");
 grpBuilder.MapGet("/{id}", GetStudentById);
 
 static async Task<IResult> GetStudentById(int id) {
-    using (IDbConnection conn = new SqlConnection("Server=localhost; Database=Demo; User ID=leo;Password=Leoliao2008; TrustServerCertificate=True")) {
+    using (IDbConnection conn = new SqlConnection("Server=47.113.113.91; Database=Demo; User ID=leo;Password=Leoliao2008; TrustServerCertificate=True")) {
         Student stu = await conn.QuerySingleAsync<Student>("SELECT * FROM STUDENT WHERE id = @id",new { id = id});
         if (stu is null)
         {
