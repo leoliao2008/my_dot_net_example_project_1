@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MinimalApiTutorial")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+35b73738b8ed10ec58eda59b6ea8d665268eccb4")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4f750db53ec16501b96c985d7ce2a5b375e07d55")]
 [assembly: System.Reflection.AssemblyProductAttribute("MinimalApiTutorial")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MinimalApiTutorial")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

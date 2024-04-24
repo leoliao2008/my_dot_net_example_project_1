@@ -40,3 +40,7 @@ DELETE {{MinimalApiTutorial_HostAddress}}/todoitems/1
 GET {{MinimalApiTutorial_HostAddress}}/todoitems/
 
 ###
+
+GET {{MinimalApiTutorial_HostAddress}}/student/200
+
+###

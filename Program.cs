@@ -4,7 +4,7 @@ using MinimalApiTutorial;
 using System.Data;
 
 string dbServerDevelop = "47.113.113.91";
-string dbServerProduction = "localhost";
+string dbServerProduction = "172.23.0.1";
 var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 app.Map("/", () => { return TypedResults.Ok("Demo Server Launches Successfully!"); });
