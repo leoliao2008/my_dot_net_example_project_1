@@ -1,6 +1,11 @@
 ﻿@MinimalApiTutorial_HostAddress = https://localhost:7183
 
 
-GET {{MinimalApiTutorial_HostAddress}}/student/100
+POST {{MinimalApiTutorial_HostAddress}}/user/
+Content-Type:Application/Json
+
+
+
+
 
 ###
