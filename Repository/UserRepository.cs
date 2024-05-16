@@ -1,21 +1,22 @@
 ﻿using ControllerApiTutorial.Models;
 using Dapper;
-using Microsoft.Data.SqlClient;
+using MinimalApiTutorial.IRepository;
+using MinimalApiTutorial.IService;
 using System.Data;
 
 namespace MinimalApiTutorial.Repository
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
-        private readonly string _conString;
-        public UserRepository(string conString)
+        private readonly IDbConnectionFactory _dbConnectionFactory;
+        public UserRepository(IDbConnectionFactory factory)
         {
-            _conString = conString;
+            _dbConnectionFactory = factory;
         }
 
         public async Task<UserEntity> Login(string userName, string pw)
         {
-            using IDbConnection con = new SqlConnection(_conString);
+            using IDbConnection con = _dbConnectionFactory.GetConnection();
             string cmd = """
                 SELECT * FROM "USER" WHERE user_name=@userName and pwd=@pw;
                 """;
@@ -25,7 +26,7 @@ namespace MinimalApiTutorial.Repository
 
         public async Task<int> Register(UserEntity user)
         {
-            using IDbConnection con = new SqlConnection(_conString);
+            using IDbConnection con = _dbConnectionFactory.GetConnection();
             user.Created = DateTime.Now;
             string cmd = """
                 INSERT INTO "USER" (
@@ -37,7 +38,8 @@ namespace MinimalApiTutorial.Repository
                     couple, 
                     is_delete, 
                     nick_name, 
-                    create_date) 
+                    create_date
+                    ) 
                 VALUES (
                     @User_Name, 
                     @Pwd, 
@@ -47,7 +49,8 @@ namespace MinimalApiTutorial.Repository
                     @CoupleId, 
                     0, 
                     @Nick_Name, 
-                    @Created);
+                    @Created
+                    );
                 """;
             return await con.ExecuteAsync(cmd, user);
 
@@ -55,7 +58,7 @@ namespace MinimalApiTutorial.Repository
 
         public async Task<bool> Update(UserEntity user)
         {
-            using IDbConnection con = new SqlConnection(_conString);
+            using IDbConnection con = _dbConnectionFactory.GetConnection();
             string cmd = """
                 UPDATE "USER" 
                 SET user_name = @User_Name,

@@ -1,6 +1,12 @@
-﻿using MinimalApiTutorial.IService;
-using MinimalApiTutorial.Model;
+﻿using Carter;
+using JWT.Algorithms;
+using JWT.Extensions.AspNetCore;
+using MinimalApiTutorial.IRepository;
+using MinimalApiTutorial.IService;
+using MinimalApiTutorial.Mapper;
+using MinimalApiTutorial.Repository;
 using MinimalApiTutorial.Service;
+using System.Security.Cryptography;
 
 namespace MinimalApiTutorial.Extensions
 {
@@ -8,26 +14,28 @@ namespace MinimalApiTutorial.Extensions
     {
         public static void AddServices(this IHostApplicationBuilder builder)
         {
+            builder.Services.AddAutoMapper(typeof(UserMapperProfile));
+            builder.Services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUserService, UserService>();
-        }
+            builder.Services.AddCarter();
+            builder.Services.AddAuthentication(
+                opt =>
+                {
+                    opt.DefaultAuthenticateScheme = JwtAuthenticationDefaults.AuthenticationScheme;
+                    opt.DefaultChallengeScheme = JwtAuthenticationDefaults.AuthenticationScheme;
+                }
+                )
+                .AddJwt(opt =>
+                {
+                    opt.Keys = ["sdfdfdafdafdafadfadfadfadfdf"];
+                    opt.VerifySignature = true;
 
-        public static void MapEndpoints(this IEndpointRouteBuilder app)
-        {
-            app.MapGet("/", () => { return TypedResults.Ok("Demo Server Launches Successfully!"); });
-
-            var grp = app.MapGroup("user");
-
-            grp.MapPost("/register", async (UserVo user, IUserService service) => { await service.registerUser(user); });
-
-            grp.MapPost("/login", async (UserVo user, IUserService service) =>
-            {
-                return await service.login(user.Name!, user.Password!);
-            });
-
-            grp.MapPost("/update", async (UserVo user, IUserService service) =>
-            {
-                return await service.Update(user);
-            });
+                });
+            builder.Services.AddSingleton<IAlgorithmFactory>(new DelegateAlgorithmFactory((ctx) => {
+                IJwtAlgorithm alo 
+                return alo;
+            })); ;
         }
     }
 }
