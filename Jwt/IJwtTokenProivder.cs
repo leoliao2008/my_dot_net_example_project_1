@@ -1,6 +1,6 @@
 ﻿using MinimalApiTutorial.Model;
 
-namespace MinimalApiTutorial.IService
+namespace MinimalApiTutorial.Jwt
 {
     public interface IJwtTokenProivder
     {
