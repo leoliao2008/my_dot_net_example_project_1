@@ -22,7 +22,8 @@ namespace MinimalApiTutorial.Endpoint
             app.MapPost("/update", async (UserVo user, IUserService service) =>
             {
                 return await service.Update(user);
-            });
+
+            }).RequireAuthorization();
         }
     }
 }

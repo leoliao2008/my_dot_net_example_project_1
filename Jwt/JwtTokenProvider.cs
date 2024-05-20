@@ -1,5 +1,7 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using MinimalApiTutorial.Model;
+using System.Diagnostics.Contracts;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -8,11 +10,12 @@ namespace MinimalApiTutorial.Jwt
 {
     public class JwtTokenProvider : IJwtTokenProivder
     {
-        private readonly IJwtOptions _opt;
+        private readonly JwtOptions _opt;
+        public static readonly string SECTION_NAME_FOR_JWT_TOKEN = "JWT";
 
-        public JwtTokenProvider(IJwtOptions opt)
+        public JwtTokenProvider(IConfiguration config)
         {
-            _opt = opt;
+            _opt = config.GetSection(SECTION_NAME_FOR_JWT_TOKEN).Get<JwtOptions>()!;
         }
 
         public string GetToken(UserVo userInfo)
@@ -27,7 +30,7 @@ namespace MinimalApiTutorial.Jwt
                     new Claim(JwtRegisteredClaimNames.Name,userInfo.Name!)
                 },
                 DateTime.UtcNow,
-                DateTime.UtcNow.AddHours(1),
+                DateTime.UtcNow.AddHours(_opt.Expire),
                 signiture
                 ); ;
             return new JwtSecurityTokenHandler().WriteToken(token);
