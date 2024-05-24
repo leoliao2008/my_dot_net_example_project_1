@@ -1,11 +1,13 @@
 ﻿using Carter;
 using MinimalApiTutorial.IService;
 using MinimalApiTutorial.Model;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace MinimalApiTutorial.Endpoint
 {
     public class UserModule : CarterModule
     {
+
         public UserModule() : base("/user") { }
 
         public override void AddRoutes(IEndpointRouteBuilder app)
@@ -19,11 +21,14 @@ namespace MinimalApiTutorial.Endpoint
                 return TypedResults.Ok(vo);
             });
 
+
             app.MapPost("/update", async (UserVo user, IUserService service) =>
             {
                 return await service.Update(user);
 
-            }).RequireAuthorization();
+            }).RequireAuthorization("self-only");
+
+
         }
     }
 }

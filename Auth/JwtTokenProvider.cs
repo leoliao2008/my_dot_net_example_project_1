@@ -1,10 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using MinimalApiTutorial.Model;
-using System.Diagnostics.Contracts;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegisteredClaimNames;
 
 namespace MinimalApiTutorial.Jwt
 {
@@ -32,7 +31,7 @@ namespace MinimalApiTutorial.Jwt
                 DateTime.UtcNow,
                 DateTime.UtcNow.AddHours(_opt.Expire),
                 signiture
-                ); ;
+                );
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
