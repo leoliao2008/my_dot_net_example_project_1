@@ -25,7 +25,7 @@ namespace MinimalApiTutorial.Jwt
                 _opt.Issuer,
                 _opt.Audience,
                 new Claim[] {
-                    new Claim(JwtRegisteredClaimNames.Sub,userInfo.Id.ToString()),
+                    new Claim(ClaimTypes.Sid,userInfo.Id.ToString()),
                     new Claim(JwtRegisteredClaimNames.Name,userInfo.Name!)
                 },
                 DateTime.UtcNow,

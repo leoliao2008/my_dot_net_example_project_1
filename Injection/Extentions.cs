@@ -51,9 +51,10 @@ namespace MinimalApiTutorial.Extensions
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSetupOpt.SecretKey))
                     };
                 });
-            builder.Services.AddAuthorization();
+            
             builder.Services.AddSingleton<IAuthorizationPolicyProvider,AuthorizationPolicyProvider>();
             builder.Services.AddSingleton<IAuthorizationHandler,SelfOnlyPolicyHandler>();
+            builder.Services.AddAuthorization();
 
 
         }

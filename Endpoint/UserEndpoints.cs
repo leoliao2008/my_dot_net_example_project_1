@@ -1,14 +1,13 @@
 ﻿using Carter;
 using MinimalApiTutorial.IService;
 using MinimalApiTutorial.Model;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace MinimalApiTutorial.Endpoint
 {
-    public class UserModule : CarterModule
+    public class UserEndpoints : CarterModule
     {
 
-        public UserModule() : base("/user") { }
+        public UserEndpoints() : base("/user") { }
 
         public override void AddRoutes(IEndpointRouteBuilder app)
         {

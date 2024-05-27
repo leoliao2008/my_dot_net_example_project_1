@@ -1,12 +1,9 @@
-﻿using Carter.Request;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 using MinimalApiTutorial.Model;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace MinimalApiTutorial.Auth
 {
@@ -34,17 +31,23 @@ namespace MinimalApiTutorial.Auth
 
         public Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
         {
-            if (policyName.Equals("self-only", StringComparison.OrdinalIgnoreCase))
+            if (policyName == "self-only")
             {
                 var builder = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme);
-                if (int.TryParse(_contextAccessor.HttpContext?.User.FindFirstValue(JwtRegisteredClaimNames.Sub), out var userId))
+                var context = _contextAccessor.HttpContext;
+                if (context != null && int.TryParse(context.User.FindFirstValue(ClaimTypes.Sid), out var userId))
                 {
-                    string? body = _contextAccessor.HttpContext?.Request.Body.AsStringAsync().Result;
-                    UserVo? vo = JsonSerializer.Deserialize<UserVo>(body??string.Empty);
+                    Stream rqBody = context.Request.Body;
+                    context.Request.EnableBuffering();
+                    rqBody.Seek(0, SeekOrigin.Begin);
+                    StreamReader reader = new StreamReader(rqBody);
+                    string jsString = reader.ReadToEndAsync().Result;
+                    rqBody.Seek(0, SeekOrigin.Begin);
+                    UserVo? vo = JsonSerializer.Deserialize<UserVo>(jsString);
                     if (vo != null)
                     {
                         builder.AddRequirements(new SelfOnlyRequirement(userId, vo.Id));
-                        return Task.FromResult(builder.Build()??null);
+                        return Task.FromResult(builder.Build() ?? null);
                     }
                 }
 
