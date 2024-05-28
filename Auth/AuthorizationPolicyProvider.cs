@@ -37,8 +37,9 @@ namespace MinimalApiTutorial.Auth
                 var context = _contextAccessor.HttpContext;
                 if (context != null && int.TryParse(context.User.FindFirstValue(ClaimTypes.Sid), out var userId))
                 {
-                    Stream rqBody = context.Request.Body;
+                    //Note(IMPORTANT!): Enable the buffering first before requesting data
                     context.Request.EnableBuffering();
+                    Stream rqBody = context.Request.Body;
                     rqBody.Seek(0, SeekOrigin.Begin);
                     StreamReader reader = new StreamReader(rqBody);
                     string jsString = reader.ReadToEndAsync().Result;
