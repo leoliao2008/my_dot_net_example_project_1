@@ -41,10 +41,9 @@ namespace MinimalApiTutorial.Auth
                     context.Request.EnableBuffering();
                     Stream rqBody = context.Request.Body;
                     rqBody.Seek(0, SeekOrigin.Begin);
-                    StreamReader reader = new StreamReader(rqBody);
-                    string jsString = reader.ReadToEndAsync().Result;
+                    string jsonString = new StreamReader(rqBody).ReadToEndAsync().Result;
                     rqBody.Seek(0, SeekOrigin.Begin);
-                    UserVo? vo = JsonSerializer.Deserialize<UserVo>(jsString);
+                    UserVo? vo = JsonSerializer.Deserialize<UserVo>(jsonString);
                     if (vo != null)
                     {
                         builder.AddRequirements(new SelfOnlyRequirement(userId, vo.Id));

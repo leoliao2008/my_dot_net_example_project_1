@@ -1,4 +1,6 @@
-﻿namespace ControllerApiTutorial.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ControllerApiTutorial.Models
 {
     public class UserEntity
     {

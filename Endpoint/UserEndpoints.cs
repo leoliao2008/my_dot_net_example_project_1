@@ -14,10 +14,11 @@ namespace MinimalApiTutorial.Endpoint
 
             app.MapPost("/register", async (UserVo user, IUserService service) => { await service.registerUser(user); });
 
-            app.MapPost("/login", async (UserVo user, IUserService service) =>
+            app.MapPost("/login", async (HttpContext ctx, UserVo user, IUserService service) =>
             {
                 UserVo vo = await service.login(user.Name!, user.Password!);
                 return TypedResults.Ok(vo);
+
             });
 
 

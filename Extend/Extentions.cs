@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using MinimalApiTutorial.Auth;
+using MinimalApiTutorial.ErrorHandler;
 using MinimalApiTutorial.IRepository;
 using MinimalApiTutorial.IService;
 using MinimalApiTutorial.Jwt;
@@ -55,8 +56,11 @@ namespace MinimalApiTutorial.Extensions
             builder.Services.AddSingleton<IAuthorizationPolicyProvider,AuthorizationPolicyProvider>();
             builder.Services.AddSingleton<IAuthorizationHandler,SelfOnlyPolicyHandler>();
             builder.Services.AddAuthorization();
+        }
 
-
+        public static void SetupGlobalExceptionHandler(this IHostApplicationBuilder builder) {
+            builder.Services.AddProblemDetails();
+            builder.Services.AddExceptionHandler<GlobleExceptionHandler>();
         }
     }
 }
